@@ -10,12 +10,29 @@ require('./bootstrap');
 window.Vue = require('vue');
 const axios = require('axios');
 import VueRouter from "vue-router";
+import {
+    ValidationObserver,
+    ValidationProvider,
+    extend,
+    localize
+} from "vee-validate";
+import fr from "vee-validate/dist/locale/fr.json";
+import * as rules from "vee-validate/dist/rules";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 Vue.use(VueRouter);
-// Install BootstrapVue
+
 Vue.use(BootstrapVue);
-// Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
+Object.keys(rules).forEach(rule => {
+    extend(rule, rules[rule]);
+});
+
+localize("fr", fr);
+
+Vue.component("ValidationObserver", ValidationObserver);
+Vue.component("ValidationProvider", ValidationProvider);
+
+
 axios.defaults.baseURL = 'http://localhost:8000/api';
 axios.defaults.headers['Content-Type'] = 'application/json';
 axios.defaults.headers['Accept'] = 'application/json';

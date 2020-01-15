@@ -22,6 +22,9 @@
             </tr>
             </tbody>
         </table>
+
+   <!--MODAL-->
+        <validation-observer ref="observer" v-slot="{ handleSubmit }">
         <b-modal
             id="modal-projet"
             ref="modal"
@@ -30,7 +33,9 @@
             @hidden="resetModal"
             @ok="handleOk"
         >
-            <form ref="form" @submit.stop.prevent="handleSubmit">
+
+            <form ref="form" @submit.stop.prevent="handleSubmit(onSubmit)">
+                <validation-provider :rules="{ required: true }" v-slot="validationContext">
                 <b-form-group
                     label="title"
                     label-for="title-input"
@@ -38,12 +43,28 @@
                 >
                     <b-form-input
                         id="title-input"
-                        v-model="title"
-                        required
+                        v-model="form.title"
+                        :state="getValidationState(validationContext)"
                     />
                 </b-form-group>
+                </validation-provider>
+                <validation-provider :rules="{ required: true }" v-slot="validationContext">
+
+                <b-form-group
+                        label="description"
+                        label-for="description-input"
+                        invalid-feedback="description is required"
+                    >
+                    <b-form-input
+                        id="description-input"
+                        v-model="form.description"
+                        :state="getValidationState(validationContext)"
+                    />
+                    </b-form-group>
+                </validation-provider>
             </form>
         </b-modal>
+        </validation-observer>
     </div>
 </template>
 <script>
@@ -52,7 +73,10 @@ export default {
         return{
             projets:[],
             errors:[],
-            title:null,
+            form:{
+                title:null,
+                description:null,
+            },
             description:null
         }
     },
@@ -72,26 +96,30 @@ export default {
         actionForm(e){
             e.preventDefault();
         },
-        checkFormValidity() {
-            const valid = this.$refs.form.checkValidity();
-            this.errors = [valid];
-            return valid
+        getValidationState({ dirty, validated, valid = null }) {
+            return dirty || validated ? valid : null;
         },
         resetModal() {
-            this.title = '';
-            this.errors = []
+            this.form = {
+                name: null,
+                food: null
+            };
+            this.errors = [];
+            this.$nextTick(() => {
+                this.$refs.observer.reset();
+            });
+
         },
         handleOk(bvModalEvt) {
             bvModalEvt.preventDefault();
-            this.handleSubmit()
+            // if(!invalid)
+            //     this.handleSubmit()
         },
-        handleSubmit() {
-            // if (!this.checkFormValidity()) {
-            //     return
-            // }
+        onSubmit() {
+            console.log(JSON.stringify(this.form));
             //api call
             this.$nextTick(() => {
-                this.$bvModal.hide('modal-prevent-closing')
+                this.$bvModal.hide('modal-projet');
             })
         }
     }
