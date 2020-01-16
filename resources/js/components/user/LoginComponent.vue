@@ -56,7 +56,6 @@ export default {
                          email: this.email,
                          password: this.password
                      });
-                 console.log(data);
                  localStorage.setItem('name', data.success.user.name);
                  localStorage.setItem('api_token', data.success.user.api_token);
                  await this.$router.push('/home');

@@ -76,6 +76,7 @@ class ProjetController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'title' => 'required',
+                'description' => 'required',
             ]);
         if($validator->fails()) {
             return response()->json(['error' =>  $validator->errors()],401);

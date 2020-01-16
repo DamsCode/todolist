@@ -16,18 +16,20 @@ import {
     extend,
     localize
 } from "vee-validate";
-import fr from "vee-validate/dist/locale/fr.json";
+
+import en from "vee-validate/dist/locale/en.json";
 import * as rules from "vee-validate/dist/rules";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
-Vue.use(VueRouter);
 
+Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
+
 Object.keys(rules).forEach(rule => {
     extend(rule, rules[rule]);
 });
 
-localize("fr", fr);
+localize("en", en);
 
 Vue.component("ValidationObserver", ValidationObserver);
 Vue.component("ValidationProvider", ValidationProvider);
@@ -51,7 +53,6 @@ Vue.prototype.$http = axios;
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 import HomeComponent from "./components/HomeComponent.vue";
-import CreateComponent from "./components/CreateComponent.vue";
 import ListsComponent from "./components/todolist/ListsComponent.vue";
 import EditComponent from "./components/EditComponent.vue";
 import LoginComponent from "./components/user/LoginComponent.vue";
@@ -75,13 +76,8 @@ const routes = [{
     component: HomeComponent,
 }, {
     name: "lists",
-    path: "/lists",
+    path: "/projets/:id/lists",
     component: ListsComponent,
-    // beforeEnter: authGuard,
-}, {
-    name: "listedit",
-    path: "/lists/edit/:id",
-    component: EditComponent,
 },{
     name: "projets",
     path: "/projets",

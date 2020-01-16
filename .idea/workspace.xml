@@ -3,11 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="60a29005-3126-495d-861e-609f392c340f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/ProjetController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/ProjetController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/projet/ProjetComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/projet/ProjetComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/todolist/ListsComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/todolist/ListsComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/user/LoginComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/user/LoginComponent.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +188,8 @@
       <option name="presentableId" value="Default" />
       <updated>1578997842310</updated>
       <workItem from="1578997844011" duration="14638000" />
-      <workItem from="1579090469730" duration="9483000" />
+      <workItem from="1579090469730" duration="10456000" />
+      <workItem from="1579160262053" duration="20826000" />
     </task>
     <servers />
   </component>
@@ -227,10 +229,10 @@
       <screen x="0" y="27" width="1366" height="741" />
     </state>
     <state x="497" y="110" width="367" height="575" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/0.27.1366.741@0.27.1366.741" timestamp="1579000387744" />
-    <state x="339" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1579090470302">
+    <state x="339" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1579160264038">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state x="339" y="225" key="com.intellij.ide.util.TipDialog/0.27.1366.741@0.27.1366.741" timestamp="1579090470302" />
+    <state x="339" y="225" key="com.intellij.ide.util.TipDialog/0.27.1366.741@0.27.1366.741" timestamp="1579160264038" />
     <state x="249" y="94" width="868" height="606" key="find.popup" timestamp="1579008108363">
       <screen x="0" y="27" width="1366" height="741" />
     </state>

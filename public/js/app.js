@@ -2013,57 +2013,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateComponent.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CreateComponent.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      list: {}
-    };
-  },
-  methods: {
-    addList: function addList() {
-      var _this = this;
-
-      this.list.users_id = 1;
-      axios.post("/lists", this.list).then(function (response) {
-        _this.$router.push({
-          name: "lists"
-        });
-      });
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EditComponent.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/EditComponent.vue?vue&type=script&lang=js& ***!
@@ -2235,23 +2184,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      isError: false,
+      variant: "success",
+      message: null,
+      showMsg: false,
       projets: [],
-      errors: [],
       form: {
         title: null,
         description: null
       },
-      description: null
+      isModeCreat: false
     };
   },
   beforeMount: function () {
     var _beforeMount = _asyncToGenerator(
     /*#__PURE__*/
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var _ref, data;
+      var _ref, data, response;
 
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
@@ -2269,16 +2240,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _ref = _context.sent;
               data = _ref.data;
               this.projets = data.data;
-              _context.next = 11;
+              _context.next = 12;
               break;
 
             case 8:
               _context.prev = 8;
               _context.t0 = _context["catch"](0);
+              response = _context.t0.response;
 
-              if (_context.t0.response.status === 401) {}
+              if (response.status === 401) {
+                this.isError = true;
+                this.message = response.data;
+              }
 
-            case 11:
+            case 12:
             case "end":
               return _context.stop();
           }
@@ -2293,39 +2268,185 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return beforeMount;
   }(),
   methods: {
-    actionForm: function actionForm(e) {
-      e.preventDefault();
-    },
-    getValidationState: function getValidationState(_ref2) {
-      var dirty = _ref2.dirty,
-          validated = _ref2.validated,
-          _ref2$valid = _ref2.valid,
-          valid = _ref2$valid === void 0 ? null : _ref2$valid;
+    getValidationState: function getValidationState(_ref3) {
+      var dirty = _ref3.dirty,
+          validated = _ref3.validated,
+          _ref3$valid = _ref3.valid,
+          valid = _ref3$valid === void 0 ? null : _ref3$valid;
       return dirty || validated ? valid : null;
+    },
+    onClick: function onClick(proj) {
+      if (proj == null) this.isModeCreat = true;
+      Object.assign(this.form, proj);
     },
     resetModal: function resetModal() {
       var _this = this;
 
+      this.isModeCreat = false;
       this.form = {
-        name: null,
-        food: null
+        title: null,
+        description: null
       };
-      this.errors = [];
       this.$nextTick(function () {
         _this.$refs.observer.reset();
       });
     },
     handleOk: function handleOk(bvModalEvt) {
-      bvModalEvt.preventDefault(); // if(!invalid)
-      //     this.handleSubmit()
-    },
-    onSubmit: function onSubmit() {
       var _this2 = this;
 
-      console.log(JSON.stringify(this.form)); //api call
+      bvModalEvt.preventDefault();
+      this.$refs.observer.validate().then(function (success) {
+        if (!success) return;
 
-      this.$nextTick(function () {
-        _this2.$bvModal.hide('modal-projet');
+        _this2.onSubmit();
+      });
+    },
+    onSubmit: function () {
+      var _onSubmit = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var _this3 = this;
+
+        var _ref4, data, oldProjet, _ref6, _data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+
+                if (this.isModeCreat) {
+                  _context2.next = 10;
+                  break;
+                }
+
+                _context2.next = 4;
+                return this.$http.put("projets/".concat(this.form.id), JSON.stringify(this.form), {
+                  headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('api_token')
+                  }
+                });
+
+              case 4:
+                _ref4 = _context2.sent;
+                data = _ref4.data;
+                oldProjet = this.projets.find(function (_ref5) {
+                  var id = _ref5.id;
+                  return id === _this3.form.id;
+                });
+                Object.assign(oldProjet, this.form);
+                _context2.next = 15;
+                break;
+
+              case 10:
+                _context2.next = 12;
+                return this.$http.post("projets", JSON.stringify(this.form), {
+                  headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('api_token')
+                  }
+                });
+
+              case 12:
+                _ref6 = _context2.sent;
+                _data = _ref6.data;
+                this.projets.push(_data.data);
+
+              case 15:
+                _context2.next = 20;
+                break;
+
+              case 17:
+                _context2.prev = 17;
+                _context2.t0 = _context2["catch"](0);
+                console.error(_context2.t0);
+
+              case 20:
+                this.$nextTick(function () {
+                  _this3.$bvModal.hide('modal-projet');
+                });
+
+              case 21:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[0, 17]]);
+      }));
+
+      function onSubmit() {
+        return _onSubmit.apply(this, arguments);
+      }
+
+      return onSubmit;
+    }(),
+    deleteDialog: function deleteDialog(projet) {
+      var _this4 = this;
+
+      this.$bvModal.msgBoxConfirm('Please confirm that you want to delete.', {
+        title: 'Please Confirm Before Delete',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      }).then(
+      /*#__PURE__*/
+      function () {
+        var _ref7 = _asyncToGenerator(
+        /*#__PURE__*/
+        _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(value) {
+          var _ref8, data, index;
+
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+            while (1) {
+              switch (_context3.prev = _context3.next) {
+                case 0:
+                  _this4.showMsg = value;
+
+                  if (!_this4.showMsg) {
+                    _context3.next = 15;
+                    break;
+                  }
+
+                  _context3.prev = 2;
+                  _context3.next = 5;
+                  return _this4.$http["delete"]("projets/".concat(projet.id), {
+                    headers: {
+                      'Authorization': 'Bearer ' + localStorage.getItem('api_token')
+                    }
+                  });
+
+                case 5:
+                  _ref8 = _context3.sent;
+                  data = _ref8.data;
+                  index = _this4.projets.indexOf(projet);
+
+                  _this4.projets.splice(index, 1);
+
+                  _context3.next = 15;
+                  break;
+
+                case 11:
+                  _context3.prev = 11;
+                  _context3.t0 = _context3["catch"](2);
+                  _this4.isError = true;
+                  console.error(_context3.t0);
+
+                case 15:
+                case "end":
+                  return _context3.stop();
+              }
+            }
+          }, _callee3, null, [[2, 11]]);
+        }));
+
+        return function (_x) {
+          return _ref7.apply(this, arguments);
+        };
+      }())["catch"](function (err) {// An error occurred
       });
     }
   }
@@ -2342,34 +2463,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2382,22 +2483,40 @@ __webpack_require__.r(__webpack_exports__);
       lists: []
     };
   },
-  created: function created() {
-    var _this = this;
+  beforeMount: function () {
+    var _beforeMount = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              console.log(this.$route.params.id); // try {
+              //     const {data} = await this.$http.get('projets',{
+              //         headers: { 'Authorization': 'Bearer '+localStorage.getItem('api_token')},
+              //     });
+              //     this.projets = data.data;
+              // }catch (e) {
+              //     if (e.response.status === 401) {
+              //
+              //     }
+              // }
 
-    axios.get("/lists").then(function (response) {
-      _this.lists = response.data;
-    });
-  },
-  methods: {
-    deletePost: function deletePost(id) {
-      var _this2 = this;
+            case 1:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
 
-      axios["delete"]("/lists/".concat(id)).then(function (response) {
-        _this2.lists.splice(_this2.lists.indexOf(id), 1);
-      });
+    function beforeMount() {
+      return _beforeMount.apply(this, arguments);
     }
-  }
+
+    return beforeMount;
+  }(),
+  methods: {}
 });
 
 /***/ }),
@@ -2562,35 +2681,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 6:
                 _ref = _context.sent;
                 data = _ref.data;
-                console.log(data);
                 localStorage.setItem('name', data.success.user.name);
                 localStorage.setItem('api_token', data.success.user.api_token);
-                _context.next = 13;
+                _context.next = 12;
                 return this.$router.push('/home');
 
-              case 13:
-                _context.next = 18;
+              case 12:
+                _context.next = 17;
                 break;
 
-              case 15:
-                _context.prev = 15;
+              case 14:
+                _context.prev = 14;
                 _context.t0 = _context["catch"](3);
 
                 if (_context.t0.response.status === 401) {
                   this.$data.errors.push("Email/Password incorrect");
                 }
 
-              case 18:
-                _context.prev = 18;
+              case 17:
+                _context.prev = 17;
                 this.$data.loading = false;
-                return _context.finish(18);
+                return _context.finish(17);
 
-              case 21:
+              case 20:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[3, 15, 18, 21]]);
+        }, _callee, this, [[3, 14, 17, 20]]);
       }));
 
       function login(_x) {
@@ -73565,14 +73683,14 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ "./node_modules/vee-validate/dist/locale/fr.json":
+/***/ "./node_modules/vee-validate/dist/locale/en.json":
 /*!*******************************************************!*\
-  !*** ./node_modules/vee-validate/dist/locale/fr.json ***!
+  !*** ./node_modules/vee-validate/dist/locale/en.json ***!
   \*******************************************************/
 /*! exports provided: code, messages, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"code\":\"fr\",\"messages\":{\"alpha\":\"Le champ {_field_} ne peut contenir que des lettres\",\"alpha_num\":\"Le champ {_field_} ne peut contenir que des caractères alpha-numériques\",\"alpha_dash\":\"Le champ {_field_} ne peut contenir que des caractères alpha-numériques, tirets ou soulignés\",\"alpha_spaces\":\"Le champ {_field_} ne peut contenir que des lettres ou des espaces\",\"between\":\"Le champ {_field_} doit être compris entre {min} et {max}\",\"confirmed\":\"Le champ {_field_} ne correspond pas\",\"digits\":\"Le champ {_field_} doit être un nombre entier de {length} chiffres\",\"dimensions\":\"Le champ {_field_} doit avoir une taille de {width} pixels par {height} pixels\",\"email\":\"Le champ {_field_} doit être une adresse e-mail valide\",\"excluded\":\"Le champ {_field_} doit être une valeur valide\",\"ext\":\"Le champ {_field_} doit être un fichier valide\",\"image\":\"Le champ {_field_} doit être une image\",\"integer\":\"Le champ {_field_} doit être un entier\",\"length\":\"Le champ {_field_} doit contenir {length} caractères\",\"max_value\":\"Le champ {_field_} doit avoir une valeur de {max} ou moins\",\"max\":\"Le champ {_field_} ne peut pas contenir plus de {length} caractères\",\"mimes\":\"Le champ {_field_} doit avoir un type MIME valide\",\"min_value\":\"Le champ {_field_} doit avoir une valeur de {min} ou plus\",\"min\":\"Le champ {_field_} doit contenir au minimum {length} caractères\",\"numeric\":\"Le champ {_field_} ne peut contenir que des chiffres\",\"oneOf\":\"Le champ {_field_} doit être une valeur valide\",\"regex\":\"Le champ {_field_} est invalide\",\"required\":\"Le champ {_field_} est obligatoire\",\"required_if\":\"Le champ {_field_} est obligatoire lorsque {target} possède cette valeur\",\"size\":\"Le champ {_field_} doit avoir un poids inférieur à {size}KB\"}}");
+module.exports = JSON.parse("{\"code\":\"en\",\"messages\":{\"alpha\":\"The {_field_} field may only contain alphabetic characters\",\"alpha_num\":\"The {_field_} field may only contain alpha-numeric characters\",\"alpha_dash\":\"The {_field_} field may contain alpha-numeric characters as well as dashes and underscores\",\"alpha_spaces\":\"The {_field_} field may only contain alphabetic characters as well as spaces\",\"between\":\"The {_field_} field must be between {min} and {max}\",\"confirmed\":\"The {_field_} field confirmation does not match\",\"digits\":\"The {_field_} field must be numeric and exactly contain {length} digits\",\"dimensions\":\"The {_field_} field must be {width} pixels by {height} pixels\",\"email\":\"The {_field_} field must be a valid email\",\"excluded\":\"The {_field_} field is not a valid value\",\"ext\":\"The {_field_} field is not a valid file\",\"image\":\"The {_field_} field must be an image\",\"integer\":\"The {_field_} field must be an integer\",\"length\":\"The {_field_} field must be {length} long\",\"max_value\":\"The {_field_} field must be {max} or less\",\"max\":\"The {_field_} field may not be greater than {length} characters\",\"mimes\":\"The {_field_} field must have a valid file type\",\"min_value\":\"The {_field_} field must be {min} or more\",\"min\":\"The {_field_} field must be at least {length} characters\",\"numeric\":\"The {_field_} field may only contain numeric characters\",\"oneOf\":\"The {_field_} field is not a valid value\",\"regex\":\"The {_field_} field format is invalid\",\"required_if\":\"The {_field_} field is required\",\"required\":\"The {_field_} field is required\",\"size\":\"The {_field_} field size must be less than {size}KB\"}}");
 
 /***/ }),
 
@@ -76366,88 +76484,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateComponent.vue?vue&type=template&id=75da6b46&":
-/*!******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CreateComponent.vue?vue&type=template&id=75da6b46& ***!
-  \******************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("h1", [_vm._v("Create a new list")]),
-    _vm._v(" "),
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.addList($event)
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("List title:")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.list.title,
-                    expression: "list.title"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text" },
-                domProps: { value: _vm.list.title },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.list, "title", $event.target.value)
-                  }
-                }
-              })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm._m(0)
-      ]
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Create")])
-    ])
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EditComponent.vue?vue&type=template&id=ad065790&":
 /*!****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/EditComponent.vue?vue&type=template&id=ad065790& ***!
@@ -76587,215 +76623,348 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "b-container",
+    { attrs: { fluid: "sm" } },
     [
-      _c("table", { staticClass: "table table-hover" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.projets, function(projet) {
-            return _c("tr", { key: projet.id }, [
-              _c("td", [_vm._v(_vm._s(projet.title))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(projet.description))]),
-              _vm._v(" "),
-              _c(
-                "td",
-                [
-                  _c(
-                    "b-button",
-                    {
-                      directives: [
-                        {
-                          name: "b-modal",
-                          rawName: "v-b-modal.modal-projet",
-                          modifiers: { "modal-projet": true }
-                        }
-                      ],
-                      attrs: { variant: "danger" }
-                    },
-                    [_vm._v("Edit")]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                [
-                  _c("b-button", { attrs: { variant: "primary" } }, [
-                    _vm._v("Go to the lists")
-                  ])
-                ],
-                1
+      !_vm.isError
+        ? _c(
+            "b-alert",
+            {
+              attrs: { variant: "success", dismissible: "" },
+              model: {
+                value: _vm.showMsg,
+                callback: function($$v) {
+                  _vm.showMsg = $$v
+                },
+                expression: "showMsg"
+              }
+            },
+            [
+              _vm._v(
+                "\n                Your projet has been deleted.\n            "
               )
-            ])
-          }),
-          0
-        )
-      ]),
+            ]
+          )
+        : _c(
+            "b-alert",
+            {
+              attrs: { variant: "danger", dismissible: "" },
+              model: {
+                value: _vm.showMsg,
+                callback: function($$v) {
+                  _vm.showMsg = $$v
+                },
+                expression: "showMsg"
+              }
+            },
+            [
+              _vm._v(
+                "\n            Your projet has been deleted.\n             "
+              )
+            ]
+          ),
       _vm._v(" "),
-      _c("validation-observer", {
-        ref: "observer",
-        scopedSlots: _vm._u([
-          {
-            key: "default",
-            fn: function(ref) {
-              var handleSubmit = ref.handleSubmit
-              return [
-                _c(
-                  "b-modal",
-                  {
-                    ref: "modal",
-                    attrs: { id: "modal-projet", title: "Edit Form" },
-                    on: {
-                      show: _vm.resetModal,
-                      hidden: _vm.resetModal,
-                      ok: _vm.handleOk
-                    }
-                  },
-                  [
-                    _c(
-                      "form",
-                      {
-                        ref: "form",
-                        on: {
-                          submit: function($event) {
-                            $event.stopPropagation()
-                            $event.preventDefault()
-                            return handleSubmit(_vm.onSubmit)
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-button",
+            {
+              directives: [
+                {
+                  name: "b-modal",
+                  rawName: "v-b-modal.modal-projet",
+                  modifiers: { "modal-projet": true }
+                }
+              ],
+              attrs: { variant: "outline-primary" },
+              on: {
+                click: function($event) {
+                  return _vm.onClick(null)
+                }
+              }
+            },
+            [_vm._v("Add Projet")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c("table", { staticClass: "table table-hover" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Title")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Description")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } })
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.projets, function(projet) {
+                return _c("tr", { key: projet.id }, [
+                  _c("td", [_vm._v(_vm._s(projet.title))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(projet.description))]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    [
+                      _c(
+                        "b-button",
+                        {
+                          directives: [
+                            {
+                              name: "b-modal",
+                              rawName: "v-b-modal.modal-projet",
+                              modifiers: { "modal-projet": true }
+                            }
+                          ],
+                          attrs: { variant: "outline-info" },
+                          on: {
+                            click: function($event) {
+                              return _vm.onClick(projet)
+                            }
                           }
-                        }
+                        },
+                        [_vm._v("Edit")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    [
+                      _c(
+                        "b-button",
+                        {
+                          attrs: { variant: "outline-danger" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteDialog(projet)
+                            }
+                          }
+                        },
+                        [_vm._v("Delete")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    [
+                      _c(
+                        "b-button",
+                        {
+                          attrs: {
+                            variant: "outline-secondary",
+                            to: { name: "lists", params: { id: projet.id } }
+                          }
+                        },
+                        [_vm._v("Go to the todo lists")]
+                      )
+                    ],
+                    1
+                  )
+                ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("validation-observer", {
+            ref: "observer",
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var handleSubmit = ref.handleSubmit
+                  return [
+                    _c(
+                      "b-modal",
+                      {
+                        ref: "modal",
+                        attrs: { id: "modal-projet", title: "Form Projet" },
+                        on: { hidden: _vm.resetModal, ok: _vm.handleOk }
                       },
                       [
-                        _c("validation-provider", {
-                          attrs: { rules: { required: true } },
-                          scopedSlots: _vm._u(
-                            [
-                              {
-                                key: "default",
-                                fn: function(validationContext) {
-                                  return [
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        attrs: {
-                                          label: "title",
-                                          "label-for": "title-input",
-                                          "invalid-feedback":
-                                            "title is required"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "title-input",
-                                            state: _vm.getValidationState(
-                                              validationContext
-                                            )
-                                          },
-                                          model: {
-                                            value: _vm.form.title,
-                                            callback: function($$v) {
-                                              _vm.$set(_vm.form, "title", $$v)
-                                            },
-                                            expression: "form.title"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ]
-                                }
+                        _c(
+                          "form",
+                          {
+                            ref: "form",
+                            on: {
+                              submit: function($event) {
+                                $event.stopPropagation()
+                                $event.preventDefault()
+                                return handleSubmit(_vm.onSubmit)
                               }
-                            ],
-                            null,
-                            true
-                          )
-                        }),
-                        _vm._v(" "),
-                        _c("validation-provider", {
-                          attrs: { rules: { required: true } },
-                          scopedSlots: _vm._u(
-                            [
-                              {
-                                key: "default",
-                                fn: function(validationContext) {
-                                  return [
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        attrs: {
-                                          label: "description",
-                                          "label-for": "description-input",
-                                          "invalid-feedback":
-                                            "description is required"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "description-input",
-                                            state: _vm.getValidationState(
-                                              validationContext
-                                            )
+                            }
+                          },
+                          [
+                            _c("validation-provider", {
+                              attrs: {
+                                name: "title",
+                                rules: "required|alpha_spaces"
+                              },
+                              scopedSlots: _vm._u(
+                                [
+                                  {
+                                    key: "default",
+                                    fn: function(validationContext) {
+                                      return [
+                                        _c(
+                                          "b-form-group",
+                                          {
+                                            attrs: {
+                                              label: "title",
+                                              "label-for": "title-input"
+                                            }
                                           },
-                                          model: {
-                                            value: _vm.form.description,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.form,
-                                                "description",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "form.description"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ]
-                                }
-                              }
-                            ],
-                            null,
-                            true
-                          )
-                        })
-                      ],
-                      1
+                                          [
+                                            _c("b-form-input", {
+                                              attrs: {
+                                                id: "title-input",
+                                                state: _vm.getValidationState(
+                                                  validationContext
+                                                )
+                                              },
+                                              model: {
+                                                value: _vm.form.title,
+                                                callback: function($$v) {
+                                                  _vm.$set(
+                                                    _vm.form,
+                                                    "title",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "form.title"
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c(
+                                              "b-form-invalid-feedback",
+                                              {
+                                                attrs: {
+                                                  id:
+                                                    "title-input-live-feedback"
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    validationContext.errors[0]
+                                                  )
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ]
+                                    }
+                                  }
+                                ],
+                                null,
+                                true
+                              )
+                            }),
+                            _vm._v(" "),
+                            _c("validation-provider", {
+                              attrs: {
+                                name: "description",
+                                rules: "required|alpha_spaces"
+                              },
+                              scopedSlots: _vm._u(
+                                [
+                                  {
+                                    key: "default",
+                                    fn: function(validationContext) {
+                                      return [
+                                        _c(
+                                          "b-form-group",
+                                          {
+                                            attrs: {
+                                              label: "description",
+                                              "label-for": "description-input"
+                                            }
+                                          },
+                                          [
+                                            _c("b-form-input", {
+                                              attrs: {
+                                                id: "description-input",
+                                                state: _vm.getValidationState(
+                                                  validationContext
+                                                )
+                                              },
+                                              model: {
+                                                value: _vm.form.description,
+                                                callback: function($$v) {
+                                                  _vm.$set(
+                                                    _vm.form,
+                                                    "description",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "form.description"
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            _c(
+                                              "b-form-invalid-feedback",
+                                              {
+                                                attrs: {
+                                                  id:
+                                                    "description-input-live-feedback"
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    validationContext.errors[0]
+                                                  )
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ]
+                                    }
+                                  }
+                                ],
+                                null,
+                                true
+                              )
+                            })
+                          ],
+                          1
+                        )
+                      ]
                     )
                   ]
-                )
-              ]
-            }
-          }
-        ])
-      })
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Title")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Description")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } })
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -76817,93 +76986,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("h1", [_vm._v("Lists")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-10" }),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-md-2" },
-        [
-          _c(
-            "router-link",
-            {
-              staticClass: "btn btn-primary",
-              attrs: { to: { name: "create" } }
-            },
-            [_vm._v("Create List")]
-          )
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("table", { staticClass: "table table-hover" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "tbody",
-        _vm._l(_vm.lists, function(list) {
-          return _c("tr", { key: _vm.lists.id }, [
-            _c("td", [_vm._v(_vm._s(list.id))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(list.title))]),
-            _vm._v(" "),
-            _c(
-              "td",
-              [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "btn btn-primary",
-                    attrs: { to: { name: "listedit", params: { id: list.id } } }
-                  },
-                  [_vm._v("Edit")]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("td", [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.deletePost(list.id)
-                    }
-                  }
-                },
-                [_vm._v("Delete")]
-              )
-            ])
-          ])
-        }),
-        0
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("List Name")])
+  return _c(
+    "b-container",
+    [
+      _c("b-alert", { attrs: { show: "true", variant: "success" } }, [
+        _vm._v("Bravoooo !!!!")
       ])
-    ])
-  }
-]
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -92416,18 +92509,17 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-/* harmony import */ var vee_validate_dist_locale_fr_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vee-validate/dist/locale/fr.json */ "./node_modules/vee-validate/dist/locale/fr.json");
-var vee_validate_dist_locale_fr_json__WEBPACK_IMPORTED_MODULE_2___namespace = /*#__PURE__*/__webpack_require__.t(/*! vee-validate/dist/locale/fr.json */ "./node_modules/vee-validate/dist/locale/fr.json", 1);
+/* harmony import */ var vee_validate_dist_locale_en_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vee-validate/dist/locale/en.json */ "./node_modules/vee-validate/dist/locale/en.json");
+var vee_validate_dist_locale_en_json__WEBPACK_IMPORTED_MODULE_2___namespace = /*#__PURE__*/__webpack_require__.t(/*! vee-validate/dist/locale/en.json */ "./node_modules/vee-validate/dist/locale/en.json", 1);
 /* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vee-validate/dist/rules */ "./node_modules/vee-validate/dist/rules.js");
 /* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
 /* harmony import */ var _components_HomeComponent_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/HomeComponent.vue */ "./resources/js/components/HomeComponent.vue");
-/* harmony import */ var _components_CreateComponent_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/CreateComponent.vue */ "./resources/js/components/CreateComponent.vue");
-/* harmony import */ var _components_todolist_ListsComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/todolist/ListsComponent.vue */ "./resources/js/components/todolist/ListsComponent.vue");
-/* harmony import */ var _components_EditComponent_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/EditComponent.vue */ "./resources/js/components/EditComponent.vue");
-/* harmony import */ var _components_user_LoginComponent_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/user/LoginComponent.vue */ "./resources/js/components/user/LoginComponent.vue");
-/* harmony import */ var _components_user_InscriptionComponent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/user/InscriptionComponent.vue */ "./resources/js/components/user/InscriptionComponent.vue");
-/* harmony import */ var _components_projet_ProjetComponent_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/projet/ProjetComponent.vue */ "./resources/js/components/projet/ProjetComponent.vue");
-/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
+/* harmony import */ var _components_todolist_ListsComponent_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/todolist/ListsComponent.vue */ "./resources/js/components/todolist/ListsComponent.vue");
+/* harmony import */ var _components_EditComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/EditComponent.vue */ "./resources/js/components/EditComponent.vue");
+/* harmony import */ var _components_user_LoginComponent_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/user/LoginComponent.vue */ "./resources/js/components/user/LoginComponent.vue");
+/* harmony import */ var _components_user_InscriptionComponent_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/user/InscriptionComponent.vue */ "./resources/js/components/user/InscriptionComponent.vue");
+/* harmony import */ var _components_projet_ProjetComponent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/projet/ProjetComponent.vue */ "./resources/js/components/projet/ProjetComponent.vue");
+/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -92450,7 +92542,7 @@ Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_4__["IconsPlugin"]);
 Object.keys(vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__).forEach(function (rule) {
   Object(vee_validate__WEBPACK_IMPORTED_MODULE_1__["extend"])(rule, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__[rule]);
 });
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_1__["localize"])("fr", vee_validate_dist_locale_fr_json__WEBPACK_IMPORTED_MODULE_2__);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_1__["localize"])("en", vee_validate_dist_locale_en_json__WEBPACK_IMPORTED_MODULE_2__);
 Vue.component("ValidationObserver", vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationObserver"]);
 Vue.component("ValidationProvider", vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationProvider"]);
 axios.defaults.baseURL = 'http://localhost:8000/api';
@@ -92475,32 +92567,26 @@ Vue.prototype.$http = axios;
 
 
 
-
 var routes = [{
   name: "login",
   path: "/login",
-  component: _components_user_LoginComponent_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+  component: _components_user_LoginComponent_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
 }, {
   name: "signin",
   path: "/signin",
-  component: _components_user_InscriptionComponent_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
+  component: _components_user_InscriptionComponent_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
 }, {
   name: "home",
   path: "/",
   component: _components_HomeComponent_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
 }, {
   name: "lists",
-  path: "/lists",
-  component: _components_todolist_ListsComponent_vue__WEBPACK_IMPORTED_MODULE_7__["default"] // beforeEnter: authGuard,
-
-}, {
-  name: "listedit",
-  path: "/lists/edit/:id",
-  component: _components_EditComponent_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
+  path: "/projets/:id/lists",
+  component: _components_todolist_ListsComponent_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
 }, {
   name: "projets",
   path: "/projets",
-  component: _components_projet_ProjetComponent_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
+  component: _components_projet_ProjetComponent_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: "history",
@@ -92512,7 +92598,7 @@ router.beforeEach(function (to, from, next) {
 });
 var app = new Vue(Vue.util.extend({
   router: router
-}, _App_vue__WEBPACK_IMPORTED_MODULE_12__["default"])).$mount("#todo");
+}, _App_vue__WEBPACK_IMPORTED_MODULE_11__["default"])).$mount("#todo");
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -92563,75 +92649,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
-
-/***/ }),
-
-/***/ "./resources/js/components/CreateComponent.vue":
-/*!*****************************************************!*\
-  !*** ./resources/js/components/CreateComponent.vue ***!
-  \*****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _CreateComponent_vue_vue_type_template_id_75da6b46___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateComponent.vue?vue&type=template&id=75da6b46& */ "./resources/js/components/CreateComponent.vue?vue&type=template&id=75da6b46&");
-/* harmony import */ var _CreateComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/CreateComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _CreateComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _CreateComponent_vue_vue_type_template_id_75da6b46___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _CreateComponent_vue_vue_type_template_id_75da6b46___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/CreateComponent.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/CreateComponent.vue?vue&type=script&lang=js&":
-/*!******************************************************************************!*\
-  !*** ./resources/js/components/CreateComponent.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./CreateComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/CreateComponent.vue?vue&type=template&id=75da6b46&":
-/*!************************************************************************************!*\
-  !*** ./resources/js/components/CreateComponent.vue?vue&type=template&id=75da6b46& ***!
-  \************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateComponent_vue_vue_type_template_id_75da6b46___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./CreateComponent.vue?vue&type=template&id=75da6b46& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateComponent.vue?vue&type=template&id=75da6b46&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateComponent_vue_vue_type_template_id_75da6b46___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateComponent_vue_vue_type_template_id_75da6b46___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
 
 /***/ }),
 
