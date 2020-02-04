@@ -19,13 +19,13 @@ class ListsController extends Controller
      */
     public function index(Request $request)
     {
-        $idproj = $request->query('projet_id');
-        if (Auth::check() && $idproj){
+            $idproj = $request->query('projet_id');
 
+        if (Auth::check() && $idproj && projet::find($idproj)->user == Auth::user() ){
             $lists = ListsResource::collection(projet::find($idproj)->lists);
             return response()->json(['data' => $lists],200);
         }
-        return response()->json(['error' =>'Need projet_id'],401);
+        return response()->json(['error' =>'Need projet_id or authenticate'],401);
     }
 
     /**
@@ -36,6 +36,10 @@ class ListsController extends Controller
      */
     public function store(Request $request)
     {
+        $idproj = $request->query('projet_id');
+        if (!Auth::check() && projet::find($idproj)->user != Auth::user())
+            return response()->json(['error' => "Oups error"],401);
+
         $validator = Validator::make($request->all(),
             [
                 'title' => 'required',
@@ -44,7 +48,7 @@ class ListsController extends Controller
         if($validator->fails()) {
             return response()->json(['error' =>  $validator->errors()],401);
         }
-        $list = Projet::find($request->query('projet_id'))->lists()->create($request->all());
+        $list = Projet::find()->lists()->create($request->all());
         return response()->json(['data' => $list],200);
     }
 
@@ -56,8 +60,10 @@ class ListsController extends Controller
      */
     public function show($id)
     {
-        if (Auth::check()){
+        if (Auth::check() && Lists::find($id)->projet->user == Auth::user()){
             return response()->json(['data' => Lists::find($id)],200);
+        }else{
+            return response()->json(['error' => "Oups error"],401);
         }
     }
 
@@ -70,6 +76,9 @@ class ListsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!Auth::check() && Lists::find($id)->projet->user  != Auth::user())
+            return response()->json(['error' => "Oups error"],401);
+
         $validator = Validator::make($request->all(),
             [
                 'title' => 'required',
@@ -91,6 +100,9 @@ class ListsController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::check() && Lists::find($id)->projet->user  != Auth::user())
+            return response()->json(['error' => "Oups error"],401);
+
         $tasks = Lists::find($id)->tasks;
         if (sizeof($tasks) == 0){
             Lists::find($id)->delete();

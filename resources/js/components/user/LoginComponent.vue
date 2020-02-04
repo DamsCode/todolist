@@ -1,10 +1,8 @@
 <template>
-
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header text-center">Login</div>
-          <div class="card-body">
+    <b-container>
+        <b-row  class="text-center justify-content-center">
+            <b-card title="Login" border-variant="primary">
+                <b-card-body class="card-body">
             <div v-if="loading">Authentication in progress...</div>
             <div v-else class="flex-center position-ref full-height">
                 <form
@@ -25,13 +23,13 @@
                         <label for="password">Password</label>
                         <input id="password" type="password" v-model="password" class="form-control" required >
                     </div>
-                    <input type="submit" value="submit" class="btn btn-primary">
+                    <input type="submit" value="login" class="btn btn-primary">
                 </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                </div>
+                </b-card-body>
+            </b-card>
+        </b-row>
+    </b-container>
 
 
 </template>

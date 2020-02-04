@@ -1,25 +1,24 @@
-<li class="nav-item">
-    <a type="button" v-on:click="logout" class="nav-link">Logout</a>
-</li><template>
-  <div class="container">
-      <nav v-if="!usr" class="navbar navbar-expand-sm bg-dark navbar-dark">
-          <ul class="navbar-nav">
-              <li class="nav-item">
+<template>
+  <b-container fluid>
+      <b-navbar class="mb-3" v-if="!usr" type="dark" variant="dark">
+          <b-navbar-nav>
+              <b-nav-item>
                 <router-link to="/login" class="nav-link">Login</router-link>
-              </li>
-              <li class="nav-item">
+              </b-nav-item>
+              <b-nav-item>
                 <router-link to="/signin" class="nav-link">Sign in</router-link>
-              </li>
-          </ul>
-      </nav>
-      <nav v-if="usr" class="navbar navbar-expand-sm bg-dark navbar-dark">
-          <ul class="navbar-nav">
-              <li class="nav-item">
-                  <router-link to="/projets" class="nav-link">My Projets</router-link>
-              </li>
-              <li class="nav-item">
+              </b-nav-item>
+        </b-navbar-nav>
+      </b-navbar>
+
+      <b-navbar class="mb-3" v-if="usr" type="dark" variant="dark">
+          <b-navbar-nav>
+              <b-nav-item>
+                  <router-link to="/projets" class="nav-link">Projets</router-link>
+              </b-nav-item>
+              <b-nav-item>
                   <a type="button" v-on:click="logout" class="nav-link">Logout</a>
-              </li>
+              </b-nav-item>
               <!--        <li class="nav-item">-->
               <!--          <router-link to="/projet" class="nav-link">Projet</router-link>-->
               <!--        </li>-->
@@ -29,10 +28,11 @@
               <!--        <li class="nav-item">-->
               <!--          <router-link to="/lists" class="nav-link">Lists</router-link>-->
               <!--        </li>-->
-          </ul>
-      </nav>
+          </b-navbar-nav>
+      </b-navbar>
+
       <router-view></router-view>
-  </div>
+  </b-container>
 </template>
 
 <style>

@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers\Api;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\API\BaseController as BaseController;
@@ -7,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use mysql_xdevapi\Exception;
 
 class AuthController extends BaseController
 {
@@ -21,13 +23,18 @@ class AuthController extends BaseController
                 'c_password' => 'required|same:password',
             ]);
         if($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(),401);
         }
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
-        User::create($input);
-        return $this->sendResponse(['success'=> 'User register successfully.'],200);
+        try {
+            User::create($input);
+            return $this->sendResponse(['success'=> 'User register successfully.'],200);
+        }catch (QueryException $e){
+            return $this->sendError('Email Error', ["This email is already used"],401);
+        }
+
     }
 
 
