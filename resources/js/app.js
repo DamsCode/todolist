@@ -58,6 +58,9 @@ import EditComponent from "./components/EditComponent.vue";
 import LoginComponent from "./components/user/LoginComponent.vue";
 import InscriptionComponent from "./components/user/InscriptionComponent.vue";
 import ProjetComponent from "./components/projet/ProjetComponent.vue";
+import TaskComponent from "./components/task/TaskComponent.vue";
+
+Vue.component("TaskComponent",TaskComponent);
 
 import App from "./App.vue";
 

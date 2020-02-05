@@ -2454,6 +2454,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/task/TaskComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/task/TaskComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['task', 'del']
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/todolist/ListsComponent.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/todolist/ListsComponent.vue?vue&type=script&lang=js& ***!
@@ -2471,11 +2505,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2564,13 +2593,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return beforeMount;
   }(),
   methods: {
+    focusMyElement: function focusMyElement(e) {
+      this.$refs.focusThis.focus();
+    },
     addList: function addList() {
       var newList = {
-        id: 0,
+        id: this.lists.length + 1,
         title: "New title",
-        dscription: "New description"
+        tasks: [{
+          id: 0,
+          title: "New task",
+          isDone: false,
+          isEdit: false
+        }],
+        isEdit: false
       };
       this.lists.push(newList);
+    },
+    editList: function editList(list) {
+      list.isEdit = true;
+    },
+    delList: function delList(list) {
+      this.lists = this.lists.filter(function (e) {
+        return e !== list;
+      });
+    },
+    addTask: function addTask(tasks) {
+      tasks.push({
+        id: tasks.length + 1,
+        title: "New task",
+        isDone: false,
+        isEdit: false
+      });
+    },
+    delTask: function delTask(task) {
+      console.log(this.lists.filter(function (e) {
+        return e.tasks.filter(function (t) {
+          return t !== task;
+        });
+      })); // this.lists. = this.lists.filter(e => e !== list);
     }
   }
 });
@@ -76828,7 +76889,7 @@ var render = function() {
             },
             [
               _vm._v(
-                "\n            Your projet has been deleted.\n             "
+                "\n                 Your projet has been deleted.\n             "
               )
             ]
           ),
@@ -77140,6 +77201,135 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/task/TaskComponent.vue?vue&type=template&id=7faef059&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/task/TaskComponent.vue?vue&type=template&id=7faef059& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-list-group-item",
+    [
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { attrs: { cols: "9", "align-self": "center" } },
+            [
+              !_vm.task.isEdit
+                ? _c(
+                    "b-card-text",
+                    {
+                      on: {
+                        click: function($event) {
+                          _vm.task.isEdit = true
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.task.title))]
+                  )
+                : _c("b-input", {
+                    attrs: { type: "text", autofocus: true },
+                    on: {
+                      keyup: function($event) {
+                        if (
+                          !$event.type.indexOf("key") &&
+                          _vm._k(
+                            $event.keyCode,
+                            "enter",
+                            13,
+                            $event.key,
+                            "Enter"
+                          )
+                        ) {
+                          return null
+                        }
+                        _vm.task.isEdit = false
+                      },
+                      blur: function($event) {
+                        _vm.task.isEdit = false
+                      }
+                    },
+                    model: {
+                      value: _vm.task.title,
+                      callback: function($$v) {
+                        _vm.$set(_vm.task, "title", $$v)
+                      },
+                      expression: "task.title"
+                    }
+                  })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { attrs: { "align-self": "center" } },
+            [
+              _c("b-checkbox", {
+                directives: [
+                  {
+                    name: "b-tooltip",
+                    rawName: "v-b-tooltip.hover",
+                    modifiers: { hover: true }
+                  }
+                ],
+                attrs: { title: "Done" },
+                model: {
+                  value: _vm.task.isDone,
+                  callback: function($$v) {
+                    _vm.$set(_vm.task, "isDone", $$v)
+                  },
+                  expression: "task.isDone"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            [
+              _c(
+                "b-button",
+                {
+                  attrs: { variant: "outline-danger", size: "sm" },
+                  on: {
+                    click: function($event) {
+                      return _vm.del(_vm.task)
+                    }
+                  }
+                },
+                [_c("b-icon", { attrs: { icon: "x", "aria-hidden": "true" } })],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/todolist/ListsComponent.vue?vue&type=template&id=1a7a5a98&":
 /*!**************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/todolist/ListsComponent.vue?vue&type=template&id=1a7a5a98& ***!
@@ -77170,80 +77360,106 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "b-list-group",
-        { attrs: { flush: "" } },
-        [
-          _c(
-            "b-list-group-item",
-            _vm._l(_vm.lists, function(list) {
-              return _c(
-                "b-card",
-                { key: list.id },
-                [
-                  _c(
-                    "b-card-header",
+      !_vm.lists.length
+        ? _c(
+            "b-row",
+            [
+              _c("b-alert", { attrs: { variant: "light", show: "" } }, [
+                _vm._v("You don't have a list")
+              ])
+            ],
+            1
+          )
+        : _c(
+            "b-list-group",
+            { attrs: { flush: "" } },
+            [
+              _c(
+                "b-list-group-item",
+                _vm._l(_vm.lists, function(list) {
+                  return _c(
+                    "b-card",
+                    { key: list.id },
                     [
                       _c(
-                        "b-row",
+                        "b-card-header",
                         [
                           _c(
-                            "b-col",
+                            "b-row",
                             [
                               _c(
-                                "b-card-text",
-                                { attrs: { align: "center" } },
-                                [_vm._v(_vm._s(list.title))]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("b-button", { attrs: { variant: "primary" } }, [
-                            _vm._v("add task")
-                          ])
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-card-body",
-                    [
-                      _c(
-                        "b-list-group",
-                        { attrs: { flush: "" } },
-                        [
-                          _c(
-                            "b-list-group-item",
-                            [
-                              _c(
-                                "b-row",
+                                "b-col",
                                 [
-                                  _c(
-                                    "b-col",
-                                    [_c("b-card-text", [_vm._v("Ma tache")])],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c("b-checkbox"),
-                                  _vm._v(" "),
-                                  _c(
-                                    "b-button",
-                                    { attrs: { variant: "light" } },
-                                    [
-                                      _c("b-icon", {
+                                  !list.isEdit
+                                    ? _c(
+                                        "b-card-text",
+                                        {
+                                          staticClass: "text-center",
+                                          on: {
+                                            click: function($event) {
+                                              list.isEdit = true
+                                            }
+                                          }
+                                        },
+                                        [_vm._v(_vm._s(list.title))]
+                                      )
+                                    : _c("b-input", {
                                         attrs: {
-                                          icon: "x",
-                                          "font-scale": "1",
-                                          variant: "danger"
+                                          type: "text",
+                                          autofocus: true
+                                        },
+                                        on: {
+                                          keyup: function($event) {
+                                            if (
+                                              !$event.type.indexOf("key") &&
+                                              _vm._k(
+                                                $event.keyCode,
+                                                "enter",
+                                                13,
+                                                $event.key,
+                                                "Enter"
+                                              )
+                                            ) {
+                                              return null
+                                            }
+                                            list.isEdit = false
+                                          },
+                                          blur: function($event) {
+                                            list.isEdit = false
+                                          }
+                                        },
+                                        model: {
+                                          value: list.title,
+                                          callback: function($$v) {
+                                            _vm.$set(list, "title", $$v)
+                                          },
+                                          expression: "list.title"
                                         }
                                       })
-                                    ],
-                                    1
-                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "b-button",
+                                {
+                                  attrs: {
+                                    variant: "outline-danger",
+                                    size: "sm"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.delList(list)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("b-icon", {
+                                    attrs: {
+                                      icon: "trash-fill",
+                                      "aria-hidden": "true"
+                                    }
+                                  })
                                 ],
                                 1
                               )
@@ -77252,19 +77468,58 @@ var render = function() {
                           )
                         ],
                         1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-card-body",
+                        [
+                          _vm._l(list.tasks, function(task) {
+                            return _c(
+                              "b-list-group",
+                              { key: task.id, attrs: { flush: "" } },
+                              [
+                                _c("TaskComponent", {
+                                  attrs: { del: _vm.delTask, task: task }
+                                })
+                              ],
+                              1
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "b-row",
+                            { staticClass: "mt-3" },
+                            [
+                              _c(
+                                "b-button",
+                                {
+                                  attrs: {
+                                    variant: "outline-primary",
+                                    size: "sm"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.addTask(list.tasks)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Add task")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        2
                       )
                     ],
                     1
                   )
-                ],
+                }),
                 1
               )
-            }),
+            ],
             1
           )
-        ],
-        1
-      )
     ],
     1
   )
@@ -92995,7 +93250,8 @@ var vee_validate_dist_locale_en_json__WEBPACK_IMPORTED_MODULE_2___namespace = /*
 /* harmony import */ var _components_user_LoginComponent_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/user/LoginComponent.vue */ "./resources/js/components/user/LoginComponent.vue");
 /* harmony import */ var _components_user_InscriptionComponent_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/user/InscriptionComponent.vue */ "./resources/js/components/user/InscriptionComponent.vue");
 /* harmony import */ var _components_projet_ProjetComponent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/projet/ProjetComponent.vue */ "./resources/js/components/projet/ProjetComponent.vue");
-/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
+/* harmony import */ var _components_task_TaskComponent_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/task/TaskComponent.vue */ "./resources/js/components/task/TaskComponent.vue");
+/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -93043,6 +93299,8 @@ Vue.prototype.$http = axios;
 
 
 
+Vue.component("TaskComponent", _components_task_TaskComponent_vue__WEBPACK_IMPORTED_MODULE_11__["default"]);
+
 var routes = [{
   name: "login",
   path: "/login",
@@ -93074,7 +93332,7 @@ router.beforeEach(function (to, from, next) {
 });
 var app = new Vue(Vue.util.extend({
   router: router
-}, _App_vue__WEBPACK_IMPORTED_MODULE_11__["default"])).$mount("#todo");
+}, _App_vue__WEBPACK_IMPORTED_MODULE_12__["default"])).$mount("#todo");
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -93330,6 +93588,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProjetComponent_vue_vue_type_template_id_07c7f98e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProjetComponent_vue_vue_type_template_id_07c7f98e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/task/TaskComponent.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/task/TaskComponent.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TaskComponent_vue_vue_type_template_id_7faef059___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TaskComponent.vue?vue&type=template&id=7faef059& */ "./resources/js/components/task/TaskComponent.vue?vue&type=template&id=7faef059&");
+/* harmony import */ var _TaskComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TaskComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/task/TaskComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TaskComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TaskComponent_vue_vue_type_template_id_7faef059___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TaskComponent_vue_vue_type_template_id_7faef059___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/task/TaskComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/task/TaskComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/task/TaskComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TaskComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TaskComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/task/TaskComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TaskComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/task/TaskComponent.vue?vue&type=template&id=7faef059&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/task/TaskComponent.vue?vue&type=template&id=7faef059& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TaskComponent_vue_vue_type_template_id_7faef059___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TaskComponent.vue?vue&type=template&id=7faef059& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/task/TaskComponent.vue?vue&type=template&id=7faef059&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TaskComponent_vue_vue_type_template_id_7faef059___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TaskComponent_vue_vue_type_template_id_7faef059___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

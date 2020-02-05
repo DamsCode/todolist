@@ -4,7 +4,7 @@
                    Your projet has been deleted.
                </b-alert>
                 <b-alert v-else variant="danger" v-model="showMsg" dismissible>
-               Your projet has been deleted.
+                    Your projet has been deleted.
                 </b-alert>
            <b-row>
                <b-button v-on:click="onClick(null)" variant="outline-primary" v-b-modal.modal-projet>Add Projet</b-button>
